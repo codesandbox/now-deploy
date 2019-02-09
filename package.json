@@ -17,6 +17,8 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "jszip": "^3.1.5",
+    "lodash.omit": "^4.5.0",
     "micro": "^9.3.3",
     "micro-cors": "^1.0.0-alpha.1",
     "micro-dev": "^3.0.0",

@@ -1,8 +1,9 @@
-const { send, json } = require('micro')
+const { send, json, buffer } = require('micro')
 const { router, get, post, del } = require('microrouter')
 const axios = require('axios')
 const microCors = require('micro-cors')
 const makeHeaders = require('./utils/makeHeaders')
+const makeAPiData = require('./utils/makeApiData')
 
 const cors = microCors()
 
@@ -92,11 +93,31 @@ const getDeployments = async (req, res) => {
   }
 }
 
+const createDeployment = async (req, res) => {
+  const { token, id, distDir } = req.query
+  const file = await buffer(req)
+  const apiData = await makeAPiData(file, id, distDir)
+  const version = apiData.version === 2 ? 'v6' : 'v3'
+
+  try {
+    const { data } = await axios.post(
+      `${url}/${version}/now/deployments?forceNew=1`,
+      apiData,
+      makeHeaders(token)
+    )
+
+    send(res, 200, data)
+  } catch (e) {
+    send(res, 500, { error: 'There was a deploying your sandbox' })
+  }
+}
+
 module.exports = cors(
   router(
     post('/alias/:id', alias),
     get('/alias/:id', getAlias),
     get('/deployments', getDeployments),
+    post('/deployments', createDeployment),
     del('/deployments/:id', deleteDeployment)
   )
 )
