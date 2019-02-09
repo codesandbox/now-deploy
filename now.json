@@ -4,18 +4,14 @@
   "alias": "now-deploy",
   "builds": [
     {
-      "src": "index.js",
-      "use": "@now/node"
-    },
-    {
-      "src": "utils/*.js",
+      "src": "src/**/*.js",
       "use": "@now/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "index.js"
+      "dest": "src/index.js"
     }
   ]
 }

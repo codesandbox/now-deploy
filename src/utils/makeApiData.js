@@ -1,5 +1,5 @@
 var omit = require('lodash.omit')
-var JSZip = require('JSZip')
+var JSZip = require('jszip')
 var jsZip = new JSZip()
 
 /**

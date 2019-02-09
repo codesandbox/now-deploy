@@ -114,6 +114,9 @@ const createDeployment = async (req, res) => {
 
 module.exports = cors(
   router(
+    get('/', (req, res) => {
+      send(res, 200, { ok: true })
+    }),
     post('/alias/:id', alias),
     get('/alias/:id', getAlias),
     get('/deployments', getDeployments),
