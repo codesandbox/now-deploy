@@ -6,6 +6,10 @@
     {
       "src": "index.js",
       "use": "@now/node"
+    },
+    {
+      "src": "utils/*.js",
+      "use": "@now/node"
     }
   ],
   "routes": [
