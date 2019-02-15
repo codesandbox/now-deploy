@@ -84,6 +84,9 @@ module.exports = async (file, id, distDir) => {
     apiData.version = 2
     apiData.builds = nowJSON.builds
     apiData.routes = nowJSON.routes
+    apiData.env = nowJSON.env
+    apiData['build.env'] = nowJSON['build.env']
+    apiData.regions = nowJSON.regions
   } else {
     apiData.config = omit(nowJSON, ['public', 'type', 'name', 'files'])
     apiData.forceNew = true
@@ -101,9 +104,15 @@ module.exports = async (file, id, distDir) => {
     const file = contents.files[filePath]
 
     if (!file.dir && filePath !== 'package.json') {
-      const data = await file.async('base64')
+      const data = await file.async('base64') // eslint-disable-line no-await-in-loop
 
       apiData.files.push({ file: filePath, data, encoding: 'base64' })
+    }
+    if (filePath === 'package.json') {
+      apiData.files.push({
+        file: 'package.json',
+        data: JSON.stringify(packageJSON, null, 2)
+      })
     }
   }
 
