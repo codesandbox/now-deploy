@@ -2,8 +2,13 @@ const { send, json, buffer } = require('micro')
 const { router, get, post, del } = require('microrouter')
 const axios = require('axios')
 const microCors = require('micro-cors')
+const winston = require('winston')
 const makeHeaders = require('./utils/makeHeaders')
 const makeAPiData = require('./utils/makeApiData')
+
+const logger = winston.createLogger({
+  transports: [new winston.transports.Console()]
+})
 
 const cors = microCors()
 
@@ -28,10 +33,13 @@ const alias = async (req, res) => {
       makeHeaders(token)
     )
 
+    logger('info', 'Alias Successful', data)
+
     send(res, 200, {
       url: `https://${data.alias}`
     })
   } catch (e) {
+    logger('error', 'Alias Unsuccessful', e)
     send(res, 500, { error: 'There was a problem aliasing your domain' })
   }
 }
@@ -42,8 +50,10 @@ const getAlias = async (req, res) => {
   try {
     const data = await getAliasCall(id, token)
 
+    logger('info', 'Get Alias Successful', data)
     send(res, 200, data)
   } catch (e) {
+    logger('error', 'Get Alias Unsuccessful', e)
     send(res, 500, { error: 'There was a problem getting your aliases' })
   }
 }
@@ -58,8 +68,10 @@ const deleteDeployment = async (req, res) => {
       makeHeaders(token)
     )
 
+    logger('info', 'Deployment Deleted', data)
     send(res, 200, data)
   } catch (e) {
+    logger('error', 'Deployment Deletion error', e)
     send(res, 500, { error: 'There was a problem deleting your deployment' })
   }
 }
@@ -86,9 +98,10 @@ const getDeployments = async (req, res) => {
     const sandboxAlias = await deploysNoAlias.map(assignAlias)
     const deploys = await Promise.all(sandboxAlias)
 
+    logger('info', 'Deployments Gotten Succefully', deploys)
     send(res, 200, { deploys })
   } catch (e) {
-    console.log(e)
+    logger('error', 'Error getting deployments', e)
     send(res, 500, { error: 'There was a problem getting your aliases' })
   }
 }
@@ -106,8 +119,10 @@ const createDeployment = async (req, res) => {
       makeHeaders(token)
     )
 
+    logger('info', 'Deployment created', data)
     send(res, 200, data)
   } catch (e) {
+    logger('info', 'error in creating Deployment created', e)
     send(res, 500, { error: 'There was a deploying your sandbox' })
   }
 }
