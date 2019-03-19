@@ -11,10 +11,10 @@ pipeline {
         }
       }
     }
-    stage('Push image to Docker Hub') {
+    stage('Push image to Google Container Registry') {
       steps {
         container('docker') {
-          withDockerRegistry([ credentialsId: "dockerhub", url: "https://gcr.io" ]) {
+          withDockerRegistry([ credentialsId: "gcr", url: "https://gcr.io" ]) {
             sh "docker push ${IMAGE_NAME}:${GIT_COMMIT[0..6]}"
           }
         }
