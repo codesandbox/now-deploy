@@ -33,13 +33,13 @@ const alias = async (req, res) => {
       makeHeaders(token)
     )
 
-    logger('info', 'Alias Successful', data)
+    logger.log('info', 'Alias Successful', data)
 
     send(res, 200, {
       url: `https://${data.alias}`
     })
   } catch (e) {
-    logger('error', 'Alias Unsuccessful', e)
+    logger.log('error', 'Alias Unsuccessful', e)
     send(res, 500, { error: 'There was a problem aliasing your domain' })
   }
 }
@@ -50,10 +50,10 @@ const getAlias = async (req, res) => {
   try {
     const data = await getAliasCall(id, token)
 
-    logger('info', 'Get Alias Successful', data)
+    logger.log('info', 'Get Alias Successful', data)
     send(res, 200, data)
   } catch (e) {
-    logger('error', 'Get Alias Unsuccessful', e)
+    logger.log('error', 'Get Alias Unsuccessful', e)
     send(res, 500, { error: 'There was a problem getting your aliases' })
   }
 }
@@ -68,10 +68,10 @@ const deleteDeployment = async (req, res) => {
       makeHeaders(token)
     )
 
-    logger('info', 'Deployment Deleted', data)
+    logger.log('info', 'Deployment Deleted', data)
     send(res, 200, data)
   } catch (e) {
-    logger('error', 'Deployment Deletion error', e)
+    logger.log('error', 'Deployment Deletion error', e)
     send(res, 500, { error: 'There was a problem deleting your deployment' })
   }
 }
@@ -98,10 +98,10 @@ const getDeployments = async (req, res) => {
     const sandboxAlias = await deploysNoAlias.map(assignAlias)
     const deploys = await Promise.all(sandboxAlias)
 
-    logger('info', 'Deployments Gotten Succefully', deploys)
+    logger.log('info', 'Deployments Gotten Succefully', deploys)
     send(res, 200, { deploys })
   } catch (e) {
-    logger('error', 'Error getting deployments', e)
+    logger.log('error', 'Error getting deployments', e)
     send(res, 500, { error: 'There was a problem getting your aliases' })
   }
 }
@@ -119,10 +119,10 @@ const createDeployment = async (req, res) => {
       makeHeaders(token)
     )
 
-    logger('info', 'Deployment created', data)
+    logger.log('info', 'Deployment created', data)
     send(res, 200, data)
   } catch (e) {
-    logger('info', 'error in creating Deployment created', e)
+    logger.log('info', 'error in creating Deployment created', e)
     send(res, 500, { error: 'There was a deploying your sandbox' })
   }
 }
