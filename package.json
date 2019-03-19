@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "micro -p 8080",
+    "start": "micro",
     "dev": "micro-dev -p 8080",
     "format": "prettier --write '**/*.{js,css,md}'",
     "posttest": "npm run format",
