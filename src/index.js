@@ -129,7 +129,8 @@ const createDeployment = async (req, res) => {
 
 module.exports = cors(
   router(
-    get('/', (req, res) => {
+    get('/healthz', (req, res) => {
+      logger.log('info', 'All Good')
       send(res, 200, { ok: true })
     }),
     post('/alias/:id', alias),
